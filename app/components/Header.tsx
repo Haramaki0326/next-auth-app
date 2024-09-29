@@ -3,9 +3,16 @@ import { SignIn } from "./signin-button";
 import { SignOut } from "./signout-button";
 import Image from "next/image";
 import { auth } from "@/auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default async function Header() {
-  // const { data: session, status } = useSession();
   const session = await auth();
 
   return (
@@ -21,16 +28,27 @@ export default async function Header() {
             <li>
               <div>
                 {session?.user ? (
-                  <div className="flex items-center space-x-4">
-                    <Image
-                      src={session.user.image!}
-                      alt="User avatar"
-                      width={32}
-                      height={32}
-                      className="rounded-full"
-                    />
-                    <SignOut />
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Image
+                        src={session.user.image!}
+                        alt="User avatar"
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                      />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>マイアカウント</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>プロフィール</DropdownMenuItem>
+                      <DropdownMenuItem>設定</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <SignOut />
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 ) : (
                   <SignIn />
                 )}
